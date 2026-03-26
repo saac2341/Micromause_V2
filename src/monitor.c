@@ -1,0 +1,50 @@
+//Incluir las librerias necesarias para leer los sensores y actualizar el estado del laberinto.
+#include "lib/monitor.h"
+#include "lib/acelerometro.h"
+#include "lib/maze.h"
+#include "lib/sensorinfrarrojo.h"
+
+//Definir las variables externas para mantener la posición actual del micromouse en el laberinto.
+int pos_x=0;
+int pos_y=0;
+
+//Definicion de las paredes en la memoria del laberinto.
+#define WALL_FRONT 0x01
+#define WALL_RIGHT 0x02
+#define WALL_BACK  0x04
+#define WALL_LEFT  0x08
+//Leer datos de los sensores y almacenarlos en la estructura monitor_data_t.
+monitor_data_t monitor_leer_datos(void) {
+    monitor_data_t data;
+    encoder_data_t encoder_data = encoder_leer();
+    acelerometro_data_t acelerometro_data = acelerometro_leer();
+
+    data.encoder_left = encoder_data.left_steps;
+    data.encoder_right = encoder_data.right_steps;
+    data.dist_left = encoder_data.left_distance;
+    data.dist_right = encoder_data.right_distance;
+    data.ax = acelerometro_data.ax;
+    data.ay = acelerometro_data.ay;
+    data.az = acelerometro_data.az;
+    data.ir.front = infrarrojo_leer_FRONT();
+    data.ir.right = infrarrojo_leer_RIGHT();
+    data.ir.back = infrarrojo_leer_BACK();
+    data.ir.left = infrarrojo_leer_LEFT();
+
+    return data;
+}
+void monitor_imprimir(monitor_data_t data) {
+        //impresora del estado de los sensores en forma de tabla.
+        printf("L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\n",
+                data.encoder_left,
+                data.encoder_right,
+                data.dist_left,
+                data.dist_right,
+                data.ax,
+                data.ay,
+                data.az,
+                data.ir.left,
+                data.ir.right,
+                data.ir.front,
+                data.ir.back);
+}
