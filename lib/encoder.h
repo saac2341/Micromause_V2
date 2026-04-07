@@ -3,6 +3,8 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+#include <stdint.h>
+
 //Descripción de las funciones que se van a usar para el encoder
 typedef struct {
     int32_t left_steps;

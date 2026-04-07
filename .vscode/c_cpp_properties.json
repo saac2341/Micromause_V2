@@ -7,12 +7,12 @@
                 "${userHome}/.pico-sdk/sdk/2.2.0/**",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/**",
-                "${workspaceFolder}/lib/**", 
+                "${workspaceFolder}/lib/**",
                 "${workspaceFolder}/temp/**",
-                "C:\\Users\\Pc\\.pico-sdk\\sdk\\2.2.0\\src/**"
+                "C:\\Users\\Pc\\.pico-sdk\\sdk\\2.2.0\\src/**",
+                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/common/pico_stdlib_headers/include"
             ],
             "forcedInclude": [
-                "${workspaceFolder}/build/generated/pico_base/pico/config_autogen.h",
                 "${userHome}/.pico-sdk/sdk/2.2.0/src/common/pico_base_headers/include/pico.h"
             ],
             "defines": [],
@@ -22,7 +22,7 @@
             ],
             "cStandard": "c17",
             "cppStandard": "c++14",
-            "intelliSenseMode": "linux-gcc-arm"
+            "intelliSenseMode": "gcc-arm"
         }
     ],
     "version": 4

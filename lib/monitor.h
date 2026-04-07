@@ -3,6 +3,8 @@
 #ifndef MONITOR_H 
 #define MONITOR_H
 
+#include <stdbool.h>
+
 //Definir x_pos y y_pos como variables externas para mantener la posición actual del micromouse en el laberinto.
 extern int pos_x;
 extern int pos_y;

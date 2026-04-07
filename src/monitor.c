@@ -3,6 +3,8 @@
 #include "lib/acelerometro.h"
 #include "lib/maze.h"
 #include "lib/sensorinfrarrojo.h"
+#include "lib/encoder.h"
+#include <stdio.h>
 
 //Definir las variables externas para mantener la posición actual del micromouse en el laberinto.
 int pos_x=0;

@@ -38,7 +38,5 @@
     "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.31.5/bin/cmake",
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     
-    "C_Cpp.errorSquiggles": "disabled",
-    "C_Cpp.default.compilerPath": "arm-none-eabi-gcc",
-    "editor.semanticHighlighting.enabled": false
+    "C_Cpp.errorSquiggles": "enabled",
 }

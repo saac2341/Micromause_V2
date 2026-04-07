@@ -2,26 +2,16 @@
 #ifndef MAXE_H
 #define MAXE_H
 
-#include "pico/stdlib.h"
-#include <stdint.h>
 #include <stdbool.h>
-#include "temp/types.h"
+#include "lib/monitor.h"
 
-#define MAZE_SIZE 16
+bool log_create(const char *filename);
 
-// Definición de la estructura de una celda del laberinto
-typedef struct{
-    uint8_t wall;
-    uint8_t visited;
-}Cell;
+bool log_write_line(const char *text);
 
-// Definición de la estructura del laberinto
-extern Cell maze[MAZE_SIZE][MAZE_SIZE];
-// Funciones para manipular el laberinto
-void maze_init();
-void maze_set_wall(int x, int y, uint8_t wall);
-uint8_t maze_get_wall(int x, int y);
+void log_close(void);
+
 
 ///Actualizar laberinto 
-void monitor_actualizar_laberinto(motor_data_ data);
+void monitor_actualizar_laberinto(monitor_data_t data);
 #endif /* MAXE_H */

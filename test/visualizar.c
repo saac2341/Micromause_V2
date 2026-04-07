@@ -1,14 +1,18 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "lib/**"
-#include "src/**"
-#include "temp/**"
+#include "lib/pwm.h"
+#include "lib/direccion.h"
+#include "lib/sensorinfrarrojo.h"
+#include "lib/encoder.h"
+#include "lib/acelerometro.h"
+#include "lib/maze.h"
+#include "lib/monitor.h"
+#include "temp/default.h"
 
 int main(){
     stdio_init_all();
 
     // Inicialización
-    maze_init();
     motores_init();
     direccion_init();
     sensor_infrarrojo_init_BACK();

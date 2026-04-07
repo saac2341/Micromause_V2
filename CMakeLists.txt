@@ -35,19 +35,30 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Micromouse_V2 Micromouse_V2.c)
+add_executable(Micromouse_V2 
+    Micromouse_V2.c
+    src/acelerometro.c
+    src/maze.c
+    src/monitor.c
+    test/visualizar.c
+    )
+add_subdirectory(lib/FatFS-SPI)
 
 pico_set_program_name(Micromouse_V2 "Micromouse_V2")
 pico_set_program_version(Micromouse_V2 "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(Micromouse_V2 0)
-pico_enable_stdio_usb(Micromouse_V2 0)
+pico_enable_stdio_usb(Micromouse_V2 1)
 
 # Add the standard library to the build
 target_link_libraries(Micromouse_V2
         pico_stdlib
-        hardware_gpio)
+        hardware_gpio
+        hardware_i2c
+        hardware_spi
+        FatFS-SPI
+        )
 
 # Add the standard include files to the build
 target_include_directories(Micromouse_V2 PRIVATE
