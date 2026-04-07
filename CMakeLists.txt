@@ -42,7 +42,6 @@ add_executable(Micromouse_V2
     src/monitor.c
     test/visualizar.c
     )
-add_subdirectory(lib/FatFS-SPI)
 
 pico_set_program_name(Micromouse_V2 "Micromouse_V2")
 pico_set_program_version(Micromouse_V2 "0.1")
@@ -57,7 +56,6 @@ target_link_libraries(Micromouse_V2
         hardware_gpio
         hardware_i2c
         hardware_spi
-        FatFS-SPI
         )
 
 # Add the standard include files to the build
