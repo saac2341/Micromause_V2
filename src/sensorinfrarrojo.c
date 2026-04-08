@@ -2,6 +2,7 @@
 #include "lib/sensorinfrarrojo.h"
 #include "pico/stdlib.h"
 #include "temp/default.h"
+#include <stdbool.h>
 
 /// Inicializa el sensor infrarrojo trasero, configurando el pin correspondiente como entrada con resistencia pull-up.
 void sensor_infrarrojo_init_BACK() {

@@ -1,12 +1,11 @@
 // PWM.c
+#include "pico/stdlib.h"
+#include "hardware/pwm.h"
+#include "hardware/gpio.h"
 #include "lib/pwm.h"
-#include "temp/default.h"
 #include <stdio.h>
 #include <stdint.h>
-#include "pico/stdlib.h"
-#include "hardware/gpio.h"
-#include "hardware/pwm.h"
-
+#include "temp/default.h"
 //variables para slinces.
 uint slice_left;
 uint slice_right;

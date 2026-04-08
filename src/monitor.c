@@ -5,10 +5,6 @@
 #include "lib/encoder.h"
 #include <stdio.h>
 
-//Definir las variables externas para mantener la posición actual del micromouse en el laberinto.
-int pos_x=0;
-int pos_y=0;
-
 //Definicion de las paredes en la memoria del laberinto.
 #define WALL_FRONT 0x01
 #define WALL_RIGHT 0x02

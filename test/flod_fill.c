@@ -43,7 +43,7 @@ int main(){
         }
 
         int next_direction = get_next_direction(data); // Determinar la siguiente dirección a tomar
-        execute_move(next_direction, data); // Ejecutar el movimiento basado en la dirección y los datos
+        execute_move(next_direction, data); // Ejecutar el movimiento basado en la dirección y los
 
         if (check_color_center(data)) {
             printf("¡Centro del laberinto alcanzado!\n");

@@ -37,10 +37,6 @@ pico_sdk_init()
 
 add_executable(Micromouse_V2 
     Micromouse_V2.c
-    src/acelerometro.c
-    src/maze.c
-    src/monitor.c
-    test/visualizar.c
     )
 
 pico_set_program_name(Micromouse_V2 "Micromouse_V2")
@@ -56,6 +52,8 @@ target_link_libraries(Micromouse_V2
         hardware_gpio
         hardware_i2c
         hardware_spi
+        hardware_pwm
+        hardware_adc
         )
 
 # Add the standard include files to the build
@@ -67,7 +65,18 @@ target_include_directories(Micromouse_V2 PRIVATE
 
         ${PICO_SDK_PATH}/src/rp2_common/hardware_gpio/include/
         ${PICO_SDK_PATH}/src/rp2_common/hardware_i2c/include/
+        ${PICO_SDK_PATH}/src/rp2_common/hardware_pwm/include/
+        ${PICO_SDK_PATH}/src/rp2_common/hardware_adc/include/
 )
 
+target_sources(Micromouse_V2 PRIVATE
+        src/maze_solver.c      # ← CAMBIAR maze.c → maze_solver.c
+        src/monitor.c
+        src/acelerometro.c
+        src/sensorinfrarrojo.c
+        src/encoder.c
+        src/pwm.c
+        src/direccion.c
+)
 pico_add_extra_outputs(Micromouse_V2)
 

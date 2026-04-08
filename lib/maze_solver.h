@@ -1,6 +1,8 @@
 /*LIBRERIA ENCARGADA DE GESTIONAR EL ALGORIDMO DE BUSQUEDA DEL LABERINTO*/
 #ifndef MAZE_SOLVER_H
 #define MAZE_SOLVER_H
+#include <stdint.h>
+#include <pico/stdlib.h>
 #include "lib/monitor.h"
 
 #define MAX_SIZE 16 // Tamaño máximo del laberinto      

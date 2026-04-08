@@ -3,6 +3,8 @@
 #ifndef SENSORINFRARROJO_H
 #define SENSORINFRARROJO_H
 
+#include <stdbool.h>
+
 void sensor_infrarrojo_init_BACK();
 bool infrarrojo_leer_BACK(void);
 

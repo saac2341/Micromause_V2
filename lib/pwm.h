@@ -2,6 +2,9 @@
 
 #ifndef PWM_H
 #define PWM_H
+#include <stdint.h>
+#include <pico/stdlib.h>
+
 /// Inicializacion de motores.
 void motores_init(void);
 
