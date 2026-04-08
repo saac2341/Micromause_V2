@@ -5,7 +5,6 @@
 #include "lib/sensorinfrarrojo.h"
 #include "lib/encoder.h"
 #include "lib/acelerometro.h"
-#include "lib/maze.h"
 #include "lib/monitor.h"
 #include "temp/default.h"
 
@@ -26,7 +25,6 @@ int main(){
         //Funcon para monitorizar el estado del micromouse y actualizar el laberinto.
         monitor_data_t data = monitor_leer_datos();
         monitor_imprimir(data);
-        monitor_actualizar_laberinto(data);
 
         //lógica de movimiento basada en los sensores infrarrojos.
         if(!data.ir.front){

@@ -10,7 +10,8 @@
                 "${workspaceFolder}/lib/**",
                 "${workspaceFolder}/temp/**",
                 "C:\\Users\\Pc\\.pico-sdk\\sdk\\2.2.0\\src/**",
-                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/common/pico_stdlib_headers/include"
+                "C:/Users/Pc/.pico-sdk/sdk/2.2.0/src/common/pico_stdlib_headers/include",
+                "${workspaceFolder}"
             ],
             "forcedInclude": [
                 "${userHome}/.pico-sdk/sdk/2.2.0/src/common/pico_base_headers/include/pico.h"

@@ -1,7 +1,6 @@
 //Incluir las librerias necesarias para leer los sensores y actualizar el estado del laberinto.
 #include "lib/monitor.h"
 #include "lib/acelerometro.h"
-#include "lib/maze.h"
 #include "lib/sensorinfrarrojo.h"
 #include "lib/encoder.h"
 #include <stdio.h>

@@ -4,11 +4,12 @@
 #define ENCODER_H
 
 #include <stdint.h>
+#include <inttypes.h>
 
-//Descripción de las funciones que se van a usar para el encoder
+//Descripción de las funciones que se van a usar para el encode
 typedef struct {
-    int32_t left_steps;
-    int32_t right_steps;  
+    int32_t left_steps; // Contador de pasos para la rueda izquierda
+    int32_t right_steps; // Contador de pasos para la rueda derecha
 
     float left_distance; // Distancia recorrida por la rueda izquierda en cm
     float right_distance; // Distancia recorrida por la rueda derecha en cm
