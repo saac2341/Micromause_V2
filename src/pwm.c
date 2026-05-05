@@ -36,13 +36,39 @@ void motores_init(void){
 }
 
 void motor_set_speed(uint motor, float speed){
-    if(speed < 0) speed = 0;
+    int reverse = (speed < 0);
+    if(speed < 0) speed = -speed;
+
     if(speed > VELOCIDAD_MAX) speed = VELOCIDAD_MAX;
 
-    uint level= (uint)(speed * PWM_MAX_DUTY_CYCLE / VELOCIDAD_MAX);
-    if (motor == 1) { // Motor izquierdo
-        pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN), level);
-    } else if (motor == 2) { // Motor derecho
-        pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN), level);
+    uint level = (uint)(speed * PWM_MAX_DUTY_CYCLE / VELOCIDAD_MAX);
+
+    if (motor == 1) { // IZQUIERDO
+
+        if(reverse){
+            // ATRÁS
+            pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN), 0);
+            pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_DIR_PIN), level);
+        } else {
+            // ADELANTE
+            pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_PWM_PIN), level);
+            pwm_set_chan_level(slice_left, pwm_gpio_to_channel(MOTOR_LEFT_DIR_PIN), 0);
+        }
+
+    } else if (motor == 2) { // DERECHO
+
+        if(reverse){
+            pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN), 0);
+            pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_DIR_PIN), level);
+        } else {
+            pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_PWM_PIN), level);
+            pwm_set_chan_level(slice_right, pwm_gpio_to_channel(MOTOR_RIGHT_DIR_PIN), 0);
+        }
     }
+}
+
+//Control de dirección del motor.
+void mover (float left, float right){
+    motor_set_speed(1, left);
+    motor_set_speed(2, right);
 }

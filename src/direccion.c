@@ -3,6 +3,7 @@
 #include "lib/direccion.h"
 #include "pico/stdlib.h"  
 #include "temp/default.h"
+#include "lib/pwm.h"
 
 /// Inicializa los pines de dirección del micromouse, configurándolos como salidas.
 void direccion_init() {
@@ -15,22 +16,23 @@ void direccion_init() {
     gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Inicialmente en bajo
 }
 void direccion_izquierda() {
-    gpio_put(MOTOR_LEFT_DIR_PIN, 1); // Activar dirección izquierda
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Desactivar dirección derecha
+    motor_set_speed(1, VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media
+    motor_set_speed(2, 0); // Motor derecho detenido   
+     
 }
 void direccion_derecha() {
-    gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Desactivar dirección izquierda
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 1); // Activar dirección derecha
+   motor_set_speed(1, 0); // Motor izquierdo detenido
+   motor_set_speed(2, VELOCIDAD_MEDIA); // Motor derecho a velocidad media
 }
 void direccion_adelante() {
-    gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Desactivar dirección izquierda
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Desactivar dirección derecha
+    motor_set_speed(1, VELOCIDAD_MAX); // Motor izquierdo a velocidad máxima
+    motor_set_speed(2, VELOCIDAD_MAX); // Motor derecho a velocidad máxima
 }
 void direccion_atras() {
-    gpio_put(MOTOR_LEFT_DIR_PIN, 1); // Activar dirección izquierda
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 1); // Activar dirección derecha
+    motor_set_speed(1, -VELOCIDAD_MAX); // Motor izquierdo a velocidad máxima en reversa
+    motor_set_speed(2, -VELOCIDAD_MAX); // Motor derecho a velocidad máxima en reversa
 }
 void direccion_parar() {
-    gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Desactivar dirección izquierda
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Desactivar dirección derecha
+    motor_set_speed(1, 0); // Detener motor izquierdo
+    motor_set_speed(2, 0); // Detener motor derecho
 }
