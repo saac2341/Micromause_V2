@@ -25,6 +25,7 @@ typedef struct{
     float ax;
     float ay;
     float az;
+    float color;
 }monitor_data_t;
 
 //Funcion para leer los datos de los sensores y almacenarlos en la estructura monitor_data_t.

@@ -77,6 +77,7 @@ target_sources(Micromouse_V2 PRIVATE
         src/encoder.c
         src/pwm.c
         src/direccion.c
+        src/color.c
 )
 pico_add_extra_outputs(Micromouse_V2)
 
