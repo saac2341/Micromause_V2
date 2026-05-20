@@ -1,54 +1,43 @@
-/*Programa para probar que funciones el algoridmo de busqueda*/
-#include <stdio.h>
+/*PROGRAMA PARA CONTROLAR LOS MOTORES*/
+
 #include "pico/stdlib.h"
+#include "hardware/pwm.h"
 #include "lib/pwm.h"
 #include "lib/direccion.h"
-#include "lib/sensorinfrarrojo.h"
-#include "lib/encoder.h"
-#include "lib/acelerometro.h"
-#include "lib/monitor.h"
 #include "temp/default.h"
-#include "lib/maze_solver.h"
+#include <stdio.h>
 
-int main(){
+int main() {
     stdio_init_all();
-  
-    // Inicialización
-    motores_init();
     direccion_init();
-    sensor_infrarrojo_init_BACK();
-    sensor_infrarrojo_init_FRONT();
-    sensor_infrarrojo_init_LEFT();
-    sensor_infrarrojo_init_RIGHT();
-    encoder_init();
-    acelerometro_init();
+    motores_init();
 
-    maze_solver_init(); // Inicializar el laberinto
+    while (true) {
+        // Prueba de movimiento hacia adelante
+        direccion_adelante(); // Velocidad máxima
+        printf("Adelante\n");
+        sleep_ms(5000); // Mover durante 5 segundos
 
-    while (true){
-         ///PRENDER PIN INTEGRADO DE LAS rASPBERRY PARA INDICAR QUE EL PROGRAMA ESTA CORRIENDO
-        gpio_init(PICO_DEFAULT_LED_PIN);
-        gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-        gpio_put(PICO_DEFAULT_LED_PIN, 1); // Encender el LED integrado
-    
-        monitor_data_t data = monitor_leer_datos();
-        monitor_imprimir(data); // Imprimir los datos del monitor para depuración
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
 
-        update_maze_monitor(data); // Actualizar el laberinto con los datos del monitor
+        direccion_atras(); // Velocidad media
+        printf("Atrás\n");
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
+        direccion_izquierda(); // Velocidad media
+        printf("Izquierda\n");
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
+        direccion_derecha(); // Velocidad media
+        printf("Derecha\n");    
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
 
-        static int flood_counter = 0;
-        if (++flood_counter > 20) {
-            flood_fill_update(); // Actualizar las distancias en el laberinto cada cierto tiempo
-            flood_counter = 0;  
-        }
-
-        int next_direction = get_next_direction(); // Determinar la siguiente dirección a tomar
-        execute_move(next_direction); // Ejecutar el movimiento basado en la dirección
-
-        if (check_color_center()) {
-            printf("¡Meta encontrada!\n");
-            break; // Salir del bucle si se ha encontrado la meta
-        }
-        sleep_ms(100); // Pequeña pausa para estabilidad
     }
+
+    return 0;
 }

@@ -7,22 +7,17 @@
 
 /// Inicializa los pines de dirección del micromouse, configurándolos como salidas.
 void direccion_init() {
-    gpio_init(MOTOR_LEFT_DIR_PIN);
-    gpio_set_dir(MOTOR_LEFT_DIR_PIN, GPIO_OUT);
-    gpio_put(MOTOR_LEFT_DIR_PIN, 0); // Inicialmente en bajo
-
-    gpio_init(MOTOR_RIGHT_DIR_PIN);
-    gpio_set_dir(MOTOR_RIGHT_DIR_PIN, GPIO_OUT);
-    gpio_put(MOTOR_RIGHT_DIR_PIN, 0); // Inicialmente en bajo
+        gpio_init(PICO_DEFAULT_LED_PIN);
+        gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+        gpio_put(PICO_DEFAULT_LED_PIN, 1); // Encender el LED integrado
 }
 void direccion_izquierda() {
-    motor_set_speed(1, VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media
-    motor_set_speed(2, 0); // Motor derecho detenido   
-     
+    motor_set_speed(1, -VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media
+    motor_set_speed(2, VELOCIDAD_MEDIA); // Motor derecho detenido      
 }
 void direccion_derecha() {
-   motor_set_speed(1, 0); // Motor izquierdo detenido
-   motor_set_speed(2, VELOCIDAD_MEDIA); // Motor derecho a velocidad media
+   motor_set_speed(1, VELOCIDAD_MEDIA); // Motor izquierdo detenido
+   motor_set_speed(2, -VELOCIDAD_MEDIA); // Motor derecho a velocidad media
 }
 void direccion_adelante() {
     motor_set_speed(1, VELOCIDAD_MAX); // Motor izquierdo a velocidad máxima
