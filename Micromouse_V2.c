@@ -17,10 +17,8 @@ int main() {
         direccion_adelante(); // Velocidad máxima
         printf("Adelante\n");
         sleep_ms(5000); // Mover durante 5 segundos
-
         direccion_parar(); // Detener los motores
         sleep_ms(1000); // Esperar 1 segundo
-
         direccion_atras(); // Velocidad media
         printf("Atrás\n");
         sleep_ms(5000); // Mover durante 5 segundos

@@ -24,7 +24,6 @@ int main(){
     acelerometro_init();
 
     maze_solver_init(); // Inicializar el laberinto
-
     while (true){
          ///PRENDER PIN INTEGRADO DE LAS rASPBERRY PARA INDICAR QUE EL PROGRAMA ESTA CORRIENDO
         gpio_init(PICO_DEFAULT_LED_PIN);

@@ -14,28 +14,29 @@ int main() {
 
     while (true) {
         // Prueba de movimiento hacia adelante
-        direccion_adelante();
+        direccion_adelante(); // Velocidad máxima
         printf("Adelante\n");
-        sleep_ms(5000); // Mover durante 2 segundos
-        // Prueba de movimiento hacia atrás
+        sleep_ms(5000); // Mover durante 5 segundos
+
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
+
         direccion_atras(); // Velocidad media
         printf("Atrás\n");
-        sleep_ms(5000); // Mover durante 2 segundos
-
-        // Prueba de giro a la izquierda
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
         direccion_izquierda(); // Velocidad media
         printf("Izquierda\n");
-        sleep_ms(5000); // Girar durante 2 segundos
-
-        // Prueba de giro a la derecha
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
         direccion_derecha(); // Velocidad media
-        printf("Derecha\n");
-        sleep_ms(5000); // Girar durante 2 segundos
+        printf("Derecha\n");    
+        sleep_ms(5000); // Mover durante 5 segundos
+        direccion_parar(); // Detener los motores
+        sleep_ms(1000); // Esperar 1 segundo
 
-        // Detener los motores
-        direccion_parar();
-        printf("Parado\n");
-        sleep_ms(5000); // Esperar antes de repetir el ciclo
     }
 
     return 0;

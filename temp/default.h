@@ -25,7 +25,7 @@
 #define PWM_FREQUENCY 125 // Frecuencia de PWM en Hz
 #define PWM_MAX_DUTY_CYCLE 1000 // Valor máximo de ciclo de trabajo para 16 bits
 
-#define DIAMETER_WHEEL 20.0 // Diámetro de la rueda en cm
+#define DIAMETER_WHEEL 6.4 // Diámetro de la rueda en cm
 #define PULSES_PER_REVOLUTION_INICIAL 20 // Número de pulsos por revolución del encoder
 
 //Definicion de velocidad para el PWM.
