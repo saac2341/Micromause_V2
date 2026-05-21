@@ -78,6 +78,7 @@ target_sources(Micromouse_V2 PRIVATE
         src/pwm.c
         src/direccion.c
         src/color.c
+        src/button.c
 )
 pico_add_extra_outputs(Micromouse_V2)
 

@@ -20,12 +20,11 @@ int main() {
     sensor_infrarrojo_init_RIGHT();
     encoder_init();
     acelerometro_init();
-
-    stdio_init_all();
     bool roboT_iniciado = false;
 
     // Bucle principal
     while(true){
+        stdio_init_all();
         // Leer sensores infrarrojos.
         monitor_data_t data = monitor_leer_datos();
         monitor_imprimir(data);
