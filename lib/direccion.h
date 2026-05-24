@@ -11,4 +11,7 @@ void direccion_izquierda();
 void direccion_derecha();
 void direccion_parar();
 
+/// Contorl de para que vaya recto, utilizando ambos motores a la misma velocidad.
+void direccion_recto();
+
 #endif

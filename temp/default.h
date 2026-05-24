@@ -29,8 +29,8 @@
 #define PULSES_PER_REVOLUTION_INICIAL 20 // Número de pulsos por revolución del encoder
 
 //Definicion de velocidad para el PWM.
-#define VELOCIDAD_MAX PWM_MAX_DUTY_CYCLE // Valor de ciclo de trabajo para el 50% de velocidad   
-#define VELOCIDAD_MEDIA (PWM_MAX_DUTY_CYCLE / 2) // Valor de ciclo de trabajo para el 75% de velocidad
+#define VELOCIDAD_MAX PWM_MAX_DUTY_CYCLE // Valor de ciclo de trabajo para el %100 velocidad   
+#define VELOCIDAD_MEDIA (PWM_MAX_DUTY_CYCLE / 2) // Valor de ciclo de trabajo para el 50% de velocidad
 #define VELOCIDAD_BAJA (PWM_MAX_DUTY_CYCLE / 4) // Valor de ciclo de trabajo para el 25% de velocidad
 
 //Definicion de pines para sensor de color TCS34725

@@ -1,52 +1,120 @@
-/*Programa de prueba encargado de verificar los sensores y 
-de deteccion*/
+/*Programa de prueba encargado de verificar los sensores y detección*/
 
 #include <stdio.h>
+#include <stdbool.h>
+
 #include "pico/stdlib.h"
+
 #include "lib/pwm.h"
 #include "lib/direccion.h"
 #include "lib/sensorinfrarrojo.h"
 #include "lib/encoder.h"
 #include "lib/acelerometro.h"
 #include "lib/monitor.h"
+#include "lib/button.h"
+
 #include "temp/default.h"
 
 int main() {
+
+    stdio_init_all();
+
     motores_init();
     direccion_init();
+
+    button_init();
+
     sensor_infrarrojo_init_BACK();
     sensor_infrarrojo_init_FRONT();
     sensor_infrarrojo_init_LEFT();
     sensor_infrarrojo_init_RIGHT();
+
     encoder_init();
     acelerometro_init();
-    bool roboT_iniciado = false;
+
+    bool robot_iniciado = false;
+
+    printf("Micromouse listo\n");
+    printf("Presione el boton de inicio\n");
 
     // Bucle principal
     while(true){
-        stdio_init_all();
-        // Leer sensores infrarrojos.
+
+        // ==========================
+        // ESPERA DE INICIO
+        // ==========================
+        if(!robot_iniciado){
+
+            direccion_parar();
+
+            if(button_pressed(BUTTON_PIN_INICIO)){
+
+                robot_iniciado = true;
+
+                printf("Robot iniciado\n");
+
+                gpio_put(PICO_DEFAULT_LED_PIN, 1);
+
+                sleep_ms(300);
+            }
+
+            sleep_ms(20);
+            continue;
+        }
+
+        // ==========================
+        // BOTON RESET
+        // ==========================
+        if(button_pressed(BUTTON_PIN_RESET)){
+
+            direccion_parar();
+
+            robot_iniciado = false;
+
+            printf("Robot detenido\n");
+
+            gpio_put(PICO_DEFAULT_LED_PIN, 0);
+
+            sleep_ms(300);
+
+            continue;
+        }
+
+        // ==========================
+        // LEER SENSORES
+        // ==========================
         monitor_data_t data = monitor_leer_datos();
+
         monitor_imprimir(data);
 
-        // Control básico de motores basado en los sensores infrarrojos.
+        // ==========================
+        // CONTROL DE MOVIMIENTO
+        // ==========================
         if (data.ir.front) {
+
             direccion_adelante();
-            sleep_ms(10); // Avanzar un poco antes de verificar nuevamente
+
         } else if (data.ir.left) {
+
             direccion_izquierda();
-            sleep_ms(10); // estabilidad
+
         } else if (data.ir.right) {
+
             direccion_derecha();
-            sleep_ms(10); // estabilidad
+
         } else if (data.ir.back) {
+
             direccion_atras();
-            sleep_ms(10); // Retroceder un poco antes de verificar nuevamente
-        }else{
+
+            // Evita vibraciones en reversa
+            sleep_ms(200);
+
+        } else {
+
             direccion_parar();
-            sleep_ms(10); // estabilidad
         }
-        sleep_ms(100); // Pequeña demora para evitar lecturas demasiado rápidas
+
+        sleep_ms(100);
     }
 
     return 0;
