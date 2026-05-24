@@ -15,6 +15,7 @@
 #define COLOR_CENTRO 1
 #endif
 
+
 /// Variable global para representar el laberinto y el estado del robot
 int center_x = 7, center_y = 7; // Coordenadas del centro del laberinto
 bool center_found = false; // Indica si se ha encontrado el centro
@@ -63,9 +64,12 @@ bool wall_between (int x1, int y1, int x2, int y2) {
 
 //INICIADOR DE LA LIBRERIA.
 void maze_solver_init() {
+    robot_direccion = 0; // Inicialmente mirando hacia el norte
+    pos_x = 0;
+    pos_y = 0;
     for (int i = 0; i < MAX_SIZE; i++) {
         for (int j = 0; j < MAX_SIZE; j++) {
-            maze[i][j].walls = 0x0F;
+            maze[i][j].walls = 0x0F; // Inicialmente sin paredes
             maze[i][j].distance = 255; // Distancia inicial infinita
             maze[i][j].visited = 0;
         }
@@ -76,33 +80,32 @@ void maze_solver_init() {
 
 //Actualizador del laberinto.
 void update_maze_monitor(monitor_data_t data){
-    uint8_t *walls = &maze[pos_y][pos_x].walls;
-
+    
     switch (robot_direccion)
     {
         case 0: //NORTE
-            if(data.ir.front) maze[pos_y][pos_x].walls &= ~0x01; // Pared al frente
-            if(data.ir.right) maze[pos_y][pos_x].walls &= ~0x02; // Pared a la derecha
-            if(data.ir.back) maze[pos_y][pos_x].walls &= ~0x04; // Pared atrás
-            if(data.ir.left) maze[pos_y][pos_x].walls &= ~0x08; // Pared a la izquierda
+            if(!data.ir.front) maze[pos_y][pos_x].walls &= ~0x01; // Pared al frente
+            if(!data.ir.right) maze[pos_y][pos_x].walls &= ~0x02; // Pared a la derecha
+            if(!data.ir.back) maze[pos_y][pos_x].walls &= ~0x04; // Pared atrás
+            if(!data.ir.left) maze[pos_y][pos_x].walls &= ~0x08; // Pared a la izquierda
             break;
         case 1: //ESTE
-            if(data.ir.front) maze[pos_y][pos_x].walls &= ~0x02; // Pared al frente
-            if(data.ir.right) maze[pos_y][pos_x].walls &= ~0x04 ; // Pared a la derecha
-            if(data.ir.back) maze[pos_y][pos_x].walls &= ~0x08      ; // Pared atrás
-            if(data.ir.left) maze[pos_y][pos_x].walls &= ~0x01; // Pared a la izquierda
+            if(!data.ir.front) maze[pos_y][pos_x].walls &= ~0x02; // Pared al frente
+            if(!data.ir.right) maze[pos_y][pos_x].walls &= ~0x04 ; // Pared a la derecha
+            if(!data.ir.back) maze[pos_y][pos_x].walls &= ~0x08      ; // Pared atrás
+            if(!data.ir.left) maze[pos_y][pos_x].walls &= ~0x01; // Pared a la izquierda
             break; 
         case 2: //SUR
-            if(data.ir.front) maze[pos_y][pos_x].walls &= ~0x04; // Pared al frente
-            if(data.ir.right) maze[pos_y][pos_x].walls &= ~0x08; // Pared a la derecha
-            if(data.ir.back) maze[pos_y][pos_x].walls &= ~0x01; // Pared atrás
-            if(data.ir.left) maze[pos_y][pos_x].walls &= ~0x02; // Pared a la izquierda
+            if(!data.ir.front) maze[pos_y][pos_x].walls &= ~0x04; // Pared al frente
+            if(!data.ir.right) maze[pos_y][pos_x].walls &= ~0x08; // Pared a la derecha
+            if(!data.ir.back) maze[pos_y][pos_x].walls &= ~0x01; // Pared atrás
+            if(!data.ir.left) maze[pos_y][pos_x].walls &= ~0x02; // Pared a la izquierda
             break;
         case 3: //OESTE
-            if(data.ir.front) maze[pos_y][pos_x].walls &= ~0x08; // Pared al frente
-            if(data.ir.right) maze[pos_y][pos_x].walls &= ~0x01; // Pared a la derecha
-            if(data.ir.back) maze[pos_y][pos_x].walls &= ~0x02; // Pared atrás
-            if(data.ir.left) maze[pos_y][pos_x].walls &= ~0x04; // Pared a la izquierda  
+            if(!data.ir.front) maze[pos_y][pos_x].walls &= ~0x08; // Pared al frente
+            if(!data.ir.right) maze[pos_y][pos_x].walls &= ~0x01; // Pared a la derecha
+            if(!data.ir.back) maze[pos_y][pos_x].walls &= ~0x02; // Pared atrás
+            if(!data.ir.left) maze[pos_y][pos_x].walls &= ~0x04; // Pared a la izquierda  
             break;
     }
     maze[pos_y][pos_x].visited = 1; // Marcar la celda como visitada
@@ -111,13 +114,13 @@ void update_maze_monitor(monitor_data_t data){
 // Algoridmo de flujo de inundacion para actualizar las distancias en el laberinto.
 void flood_fill_update(void) {
     //Reseteamos las distancias excepto el centro
-    float INF;
+    #define INF 255
     for (int y=0; y <MAX_SIZE; y++){
         for(int x = 0; x < MAX_SIZE; x++){
             maze[y][x].distance = INF;
         }
-        queue_reset();
     }
+     queue_reset();
     // Si se ha encontrado el centro, usar sus coordenadas como objetivo, sino usar el centro del laberinto
     int goal_x = center_found ? center_x : 7;
     int goal_y = center_found ? center_y : 7;
@@ -170,12 +173,14 @@ int get_next_direction (void) {
         continue; // Ignorar fuera de límites
 
         if (!wall_between(pos_x, pos_y, nx, ny) && 
-            maze[ny][nx].distance < best_dist) {
+            maze[ny][nx].distance < best_dist &&
+            !maze[ny][nx].visited) {
             best_dist = maze[ny][nx].distance;
             best_dir = dir;
             }
-       return best_dir;
+    
     }
+      return best_dir;
 }
 
 /// Ejecuta el movimiento hacia la siguiente dirección determinada.
@@ -183,20 +188,24 @@ int get_next_direction (void) {
 void execute_move(int next_direction) {
     int turn = (next_direction - robot_direccion + 4) % 4;
    
-    if (turn == 0) direccion_adelante();
-    else if (turn == 1) direccion_derecha();
-    else if (turn == 2) direccion_atras();
-    else direccion_izquierda();
-
-    motor_set_speed(1, VELOCIDAD_MEDIA);
-    motor_set_speed(2, VELOCIDAD_MEDIA);
-    sleep_ms(500); // Simulación de tiempo de movimiento
+    switch (turn)
+    {
+        case 0: break;
+        case 1: grados_derecha_90(); break; // Giro a la derecha
+        case 2: grados_180(); break;/// Giro de 180 grados
+        case 3: grados_izquierda_90(); break;/// Giro a la izquierda
+    }
+    avanzar_celda(); // Avanzar una celda completa en la dirección actual
 
     ///actualizar posición y dirección del robot
     robot_direccion = next_direction;
-    pos_x += dx[robot_direccion];
-    pos_y += dy[robot_direccion];
-    printf("==> Dir: %d, Pos: (%d, %d)", robot_direccion, pos_x, pos_y);
+    int new_x= pos_x + dx[next_direction];
+    int new_y = pos_y + dy[next_direction];
+    
+    if (new_x >= 0 && new_x < MAX_SIZE && new_y >= 0 && new_y < MAX_SIZE) {
+        pos_x = new_x;
+        pos_y = new_y;
+    }
 }
 
 //Verifica si el robot ha llegado al centro del laberinto basado en los datos del monitor.
@@ -228,7 +237,11 @@ void flood_explore(void) {
     while (!reached_center) {
         monitor_data_t data = monitor_leer_datos();
         update_maze_monitor(data);
-        
+        printf("Pos=(%d,%d) Dir=%d Walls=%02X\n",
+         pos_x,
+         pos_y,
+         robot_direccion,
+         maze[pos_y][pos_x].walls);        
         if(check_color_center()){
             flood_fill_update(); // Actualizar distancias al encontrar el centro
         }
@@ -259,7 +272,7 @@ void flood_optimize(void) {
     }
 }
 
-void execute_move_fast(int next_direction) {
+/*void execute_move_fast(int next_direction) {
     int turn = (next_direction - robot_direccion + 4) % 4;
    
     if (turn == 0) direccion_adelante();
@@ -277,3 +290,4 @@ void execute_move_fast(int next_direction) {
     pos_y += dy[robot_direccion];
     printf("==> Dir: %d, Pos: (%d, %d)", robot_direccion, pos_x, pos_y);
 }
+*/

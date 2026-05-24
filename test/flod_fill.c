@@ -1,53 +1,85 @@
-/*Programa para probar que funciones el algoridmo de busqueda*/
-#include <stdio.h>
-#include "pico/stdlib.h"
-#include "lib/pwm.h"
-#include "lib/direccion.h"
-#include "lib/sensorinfrarrojo.h"
-#include "lib/encoder.h"
-#include "lib/acelerometro.h"
-#include "lib/monitor.h"
-#include "temp/default.h"
-#include "lib/maze_solver.h"
+int main() {
 
-int main(){
     stdio_init_all();
-  
-    // Inicialización
+
     motores_init();
     direccion_init();
+
     sensor_infrarrojo_init_BACK();
     sensor_infrarrojo_init_FRONT();
     sensor_infrarrojo_init_LEFT();
     sensor_infrarrojo_init_RIGHT();
+
     encoder_init();
     acelerometro_init();
 
-    maze_solver_init(); // Inicializar el laberinto
-    while (true){
-         ///PRENDER PIN INTEGRADO DE LAS rASPBERRY PARA INDICAR QUE EL PROGRAMA ESTA CORRIENDO
-        gpio_init(PICO_DEFAULT_LED_PIN);
-        gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
-        gpio_put(PICO_DEFAULT_LED_PIN, 1); // Encender el LED integrado
-    
-        monitor_data_t data = monitor_leer_datos();
-        monitor_imprimir(data); // Imprimir los datos del monitor para depuración
+    maze_solver_init();
 
-        update_maze_monitor(data); // Actualizar el laberinto con los datos del monitor
+    gpio_init(BUTTON_PIN_INICIO);
+    gpio_set_dir(BUTTON_PIN_INICIO, GPIO_IN);
+    gpio_pull_down(BUTTON_PIN_INICIO);
 
-        static int flood_counter = 0;
-        if (++flood_counter > 100) {
-            flood_fill_update(); // Actualizar las distancias en el laberinto cada cierto tiempo
-            flood_counter = 0;  
+    gpio_init(BUTTON_PIN_RESET);
+    gpio_set_dir(BUTTON_PIN_RESET, GPIO_IN);
+    gpio_pull_down(BUTTON_PIN_RESET);
+
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+
+    bool started = false;
+
+    while(true) {
+
+        // Esperando inicio
+        if(!started) {
+
+            gpio_put(PICO_DEFAULT_LED_PIN, 0);
+
+            if(gpio_get(BUTTON_PIN_INICIO)) {
+
+                sleep_ms(50);
+
+                if(gpio_get(BUTTON_PIN_INICIO)) {
+
+                    printf("Inicio de exploracion\n");
+
+                    started = true;
+
+                    gpio_put(PICO_DEFAULT_LED_PIN, 1);
+                }
+            }
         }
 
-        int next_direction = get_next_direction(data); // Determinar la siguiente dirección a tomar
-        execute_move(next_direction, data); // Ejecutar el movimiento basado en la dirección y los 
+        // Exploracion
+        else {
 
-        if (check_color_center(data)) {
-            printf("¡Centro del laberinto alcanzado!\n");
-            break; // Salir del bucle si se ha alcanzado el centro
+            flood_explore();
+
+            printf("Centro encontrado\n");
+
+            started = false;
         }
-        sleep_ms(100); // Pequeña pausa para estabilidad
+
+        // Reset
+        if(gpio_get(BUTTON_PIN_RESET)) {
+
+            sleep_ms(50);
+
+            if(gpio_get(BUTTON_PIN_RESET)) {
+
+                printf("Reset del laberinto\n");
+
+                maze_solver_init();
+
+                started = false;
+
+                direccion_parar();
+
+                while(gpio_get(BUTTON_PIN_RESET))
+                    sleep_ms(10);
+            }
+        }
+
+        sleep_ms(10);
     }
 }

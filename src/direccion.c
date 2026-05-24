@@ -6,6 +6,8 @@
 #include "lib/pwm.h"
 #include "lib/encoder.h"
 #include "lib/monitor.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /// Inicializa los pines de dirección del micromouse, configurándolos como salidas.
 void direccion_init() {
@@ -46,27 +48,70 @@ void direccion_recto() {
     
     encoder_data_t data = encoder_leer();
 
-    int32_t vel_left = data.left_steps - last_left_steps;
-    int32_t vel_right = data.right_steps - last_right_steps;
+    int32_t error = data.left_steps - data.right_steps; // Error basado en la diferencia de pasos entre las ruedas
 
-    // Actualizar los pasos anteriores
-    last_left_steps = data.left_steps;
-    last_right_steps = data.right_steps;
-
-    int32_t error = vel_left - vel_right;
-    float kp = 0.5f; // Ganancia proporcional para la corrección
+    float kp = 0.1f; // Ganancia proporcional para la corrección
 
     int correction = (int)(kp * error);
 
-    int pwm_left = VELOCIDAD_MEDIA - correction;
-    int pwm_right = VELOCIDAD_MEDIA + correction;
+   motor_set_speed(1, VELOCIDAD_MEDIA - correction); // Ajustar velocidad del motor izquierdo
+   motor_set_speed(2, VELOCIDAD_MEDIA + correction); // Ajustar velocidad del motor derecho
+}
 
-    if (pwm_left > VELOCIDAD_MAX) pwm_left = VELOCIDAD_MAX;
-    if (pwm_right > VELOCIDAD_MAX) pwm_right = VELOCIDAD_MAX;
+int PASOS_CELDA = 200; // Número de pasos del encoder que corresponden a una celda completa, este valor debe ser calibrado según el robot y la configuración de los motores.
+// Función para avanzar una celda completa, asumiendo que una celda equivale a un número específico de pasos del encoder.
+void avanzar_celda() {
+    encoder_reset(); // Reiniciar los contadores de pasos
+    while (true){
+        direccion_recto(); // Mantener la dirección recta
+        encoder_data_t data = encoder_leer();
+        if (data.left_steps >= PASOS_CELDA &&
+        data.right_steps >= PASOS_CELDA) {
+            break; // Salir del bucle cuando se haya avanzado una celda completa
+        }
+    }
+    direccion_parar(); // Detener el movimiento una vez que se haya avanzado la celda
+}
 
-    if (pwm_left < 0) pwm_left = 0;
-    if (pwm_right < 0) pwm_right = 0;
-
-    motor_set_speed(1, pwm_left);
-    motor_set_speed(2, pwm_right);
+///Funciones para que gire a 90 grados a la izquierda o derecha, o para que avance o retroceda, utilizando los motores de manera adecuada para cada dirección.
+#define PASOS_GIRO_90 95 // Número de pasos del encoder que corresponden a un giro de 90 grados, este valor debe ser calibrado según el robot y la configuración de los motores.
+void grados_izquierda_90() {
+    encoder_reset(); // Reiniciar los contadores de pasos
+    while(true){
+        motor_set_speed(1, -VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media hacia atrás
+        motor_set_speed(2, VELOCIDAD_MEDIA); // Motor derecho a velocidad media hacia adelante
+        encoder_data_t data = encoder_leer();
+        if (abs(data.left_steps)>= PASOS_GIRO_90 &&
+        abs(data.right_steps) >= PASOS_GIRO_90) {
+            break; // Salir del bucle cuando se haya girado 90 grados
+        }   
+    }
+    direccion_parar(); // Detener el movimiento después de girar
+}
+void grados_derecha_90() {
+    encoder_reset(); // Reiniciar los contadores de pasos
+    while(true){
+        motor_set_speed(1, VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media hacia adelante
+        motor_set_speed(2, -VELOCIDAD_MEDIA); // Motor derecho a velocidad media en reversa
+        encoder_data_t data = encoder_leer();
+        if (abs(data.left_steps)>= PASOS_GIRO_90 &&
+        abs(data.right_steps) >= PASOS_GIRO_90) {
+            break; // Salir del bucle cuando se haya girado 90 grados
+        }   
+    }
+    direccion_parar(); // Detener el movimiento después de girar
+}
+#define PASOS_GIRO_180 190 // Número de pasos del encoder que corresponden a un giro de 180 grados, este valor debe ser calibrado según el robot y la configuración de los motores.
+void grados_180() {
+    encoder_reset(); // Reiniciar los contadores de pasos
+    while(true){
+        motor_set_speed(1, -VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media en reversa
+        motor_set_speed(2, -VELOCIDAD_MEDIA); // Motor derecho a velocidad media en reversa
+        encoder_data_t data = encoder_leer();
+        if (abs(data.left_steps)>= PASOS_GIRO_180 &&
+        abs(data.right_steps) >= PASOS_GIRO_180) {
+            break; // Salir del bucle cuando se haya girado 180 grados
+        }   
+    }
+    direccion_parar(); // Detener el movimiento después de girar
 }
