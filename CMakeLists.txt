@@ -36,7 +36,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(Micromouse_V2 
-    Micromouse_V2.c
+    Micromouse_V2.cpp
     )
 
 pico_set_program_name(Micromouse_V2 "Micromouse_V2")
@@ -70,7 +70,7 @@ target_include_directories(Micromouse_V2 PRIVATE
 )
 
 target_sources(Micromouse_V2 PRIVATE
-        src/maze_solver.c      # ← CAMBIAR maze.c → maze_solver.c
+        src/maze_solver.c      
         src/monitor.c
         src/acelerometro.c
         src/sensorinfrarrojo.c

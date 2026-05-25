@@ -3,6 +3,10 @@
 #ifndef ACELEROMETRO_H
 #define ACELEROMETRO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //Estas librerias son para el acelerometro/giroscopio MPU6050, se pueden cambiar por otras dependiendo del modelo que se use
 //Descripcion de las funciones que se van a usar para el acelerometro/giroscopio
 typedef struct {
@@ -14,5 +18,9 @@ typedef struct {
 void acelerometro_init(void);
 
 acelerometro_data_t acelerometro_leer(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

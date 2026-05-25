@@ -3,6 +3,10 @@
 #ifndef DIRECCION_H
 #define DIRECCION_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// Control de la dirección del micromouse, utilizando los pines correspondientes para cada dirección.
 void direccion_init();
 void direccion_adelante();
@@ -22,4 +26,8 @@ void grados_izquierda_90();
 void grados_derecha_90();
 void grados_180();
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* DIRECCION_H */

@@ -3,7 +3,7 @@
 #define DEFAULT_H
 
 //Definición de pines para sensor infrarrojo
-#define IR_LEFT_PIN 14
+#define IR_LEFT_PIN 13
 #define IR_RIGHT_PIN 15
 #define IR_FRONT_PIN 17
 #define IR_BACK_PIN 16

@@ -2,9 +2,17 @@
 
 #ifndef COLOR_H
 #define COLOR_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <stdint.h>
 ///funcines de lectura 
 void color_init(void);
 void color_read(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

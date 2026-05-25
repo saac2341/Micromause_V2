@@ -1,6 +1,10 @@
 /*LIBRERIA ENCARGADA DE GESTIONAR EL ALGORIDMO DE BUSQUEDA DEL LABERINTO*/
 #ifndef MAZE_SOLVER_H
 #define MAZE_SOLVER_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <pico/stdlib.h>
 #include "lib/monitor.h"
@@ -44,5 +48,9 @@ void flood_explore(void); // Algoritmo de exploración basado en el flujo de inu
 void flood_optimize(void); // Algoritmo de optimización basado en el flujo de inundación para encontrar la ruta más corta al centro del laberinto
 
 bool at_center_dynamic(void); // Verifica si el robot ha alcanzado el centro del laberinto
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

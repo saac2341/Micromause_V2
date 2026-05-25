@@ -2,7 +2,9 @@
 
 #ifndef MONITOR_H 
 #define MONITOR_H
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <stdbool.h>
 
 //Definir x_pos y y_pos como variables externas para mantener la posición actual del micromouse en el laberinto.
@@ -34,4 +36,7 @@ monitor_data_t monitor_leer_datos(void);
 // Función para imprimir el estado del micromouse
 void monitor_imprimir(monitor_data_t data);
 
+#ifdef __cplusplus
+}
 #endif
+#endif /* MONITOR_H */

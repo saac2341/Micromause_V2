@@ -3,6 +3,9 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include <stdint.h>
 #include <inttypes.h>
 
@@ -21,5 +24,9 @@ void encoder_init(void); //iniciador de encoder.
 void encoder_reset(void); //reiniciar los contadores de pasos.
 
 encoder_data_t encoder_leer(void); //funcion para leer los pasos y distancia recorrida por cada rueda, devuelve una estructura con esta información.
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif 

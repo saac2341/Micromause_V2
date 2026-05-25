@@ -3,6 +3,10 @@
 #ifndef SENSORINFRARROJO_H
 #define SENSORINFRARROJO_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdbool.h>
 
 void sensor_infrarrojo_init_BACK();
@@ -17,5 +21,7 @@ bool infrarrojo_leer_LEFT(void);
 void sensor_infrarrojo_init_RIGHT();
 bool infrarrojo_leer_RIGHT(void);
 
-
+#ifdef __cplusplus
+}
+#endif
 #endif
