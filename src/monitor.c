@@ -4,13 +4,17 @@
 #include "lib/sensorinfrarrojo.h"
 #include "lib/encoder.h"
 #include <stdio.h>
+#include "temp/default.h"
+#include "lib/comunicacion.h"
+
+#include "hardware/uart.h"
 
 //Definicion de las paredes en la memoria del laberinto.
 #define WALL_FRONT 0x01
 #define WALL_RIGHT 0x02
 #define WALL_BACK  0x04
 #define WALL_LEFT  0x08
-//Leer datos de los sensores y almacenarlos en la estructura monitor_data_t.
+
 monitor_data_t monitor_leer_datos(void) {
     monitor_data_t data;
     encoder_data_t encoder_data = encoder_leer();
@@ -31,17 +35,25 @@ monitor_data_t monitor_leer_datos(void) {
     return data;
 }
 void monitor_imprimir(monitor_data_t data) {
-        //impresora del estado de los sensores en forma de tabla.
-        printf("L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\n",
-                data.encoder_left,
-                data.encoder_right,
-                data.dist_left,
-                data.dist_right,
-                data.ax,
-                data.ay,
-                data.az,
-                data.ir.left,
-                data.ir.right,
-                data.ir.front,
-                data.ir.back);
+        //Leer datos de los sensores y almacenarlos en la estructura monitor_data_t.
+
+    char buffer[256]; // Buffer para almacenar los datos a enviar por UART
+ snprintf(buffer,
+             sizeof(buffer),
+             "L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\r\n",
+             data.encoder_left,
+             data.encoder_right,
+             data.dist_left,
+             data.dist_right,
+             data.ax,
+             data.ay,
+             data.az,
+             data.ir.left,
+             data.ir.right,
+             data.ir.front,
+             data.ir.back);
+            //Enviar los datos por UART
+            uart_puts(UART_ID, buffer);
+        // Imprimir los datos en la consola para depuración
+    printf("%s", buffer);
 }

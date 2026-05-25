@@ -13,6 +13,7 @@
 #include "lib/acelerometro.h"
 #include "lib/monitor.h"
 #include "lib/button.h"
+#include "lib/comunicacion.h"
 
 #include "temp/default.h"
 
@@ -32,6 +33,7 @@ int main() {
 
     encoder_init();
     acelerometro_init();
+    setup_uart();
 
     bool robot_iniciado = false;
 
@@ -87,7 +89,6 @@ int main() {
         monitor_data_t data = monitor_leer_datos();
 
         monitor_imprimir(data);
-
         // ==========================
         // CONTROL DE MOVIMIENTO
         // ==========================

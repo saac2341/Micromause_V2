@@ -41,6 +41,13 @@
 #define BUTTON_PIN_INICIO 26
 #define BUTTON_PIN_RESET 27
 
+///Definicion de UART para comunicacion con la computadora
+#define UART_ID uart0
+#define BAUD_RATE 115200
+
+#define UART_TX_PIN 0
+#define UART_RX_PIN 1
+
 /*Definicion de pines para Modulo SD LVC125a para guardar datos y chekpoins del laberinto 
 #define SD_CS_PIN 9
 #define SD_SCK_PIN 10

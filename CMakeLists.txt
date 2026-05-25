@@ -79,6 +79,7 @@ target_sources(Micromouse_V2 PRIVATE
         src/direccion.c
         src/color.c
         src/button.c
+        src/comunicacion.cpp
 )
 pico_add_extra_outputs(Micromouse_V2)
 
