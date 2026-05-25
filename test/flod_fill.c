@@ -1,3 +1,20 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#include "pico/stdlib.h"
+
+
+#include "lib/pwm.h"
+#include "lib/direccion.h"
+#include "lib/sensorinfrarrojo.h"
+#include "lib/encoder.h"
+#include "lib/acelerometro.h"
+#include "lib/monitor.h"
+#include "lib/button.h"
+#include "lib/comunicacion.h"
+#include "maze_solver.h"
+
+#include "temp/default.h"
 int main() {
 
     stdio_init_all();

@@ -1,5 +1,3 @@
-/*Programa de prueba encargado de verificar los sensores y detección*/
-
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -14,17 +12,15 @@
 #include "lib/monitor.h"
 #include "lib/button.h"
 #include "lib/comunicacion.h"
+#include "maze_solver.h"
 
 #include "temp/default.h"
-
 int main() {
 
     stdio_init_all();
 
     motores_init();
     direccion_init();
-
-    button_init();
 
     sensor_infrarrojo_init_BACK();
     sensor_infrarrojo_init_FRONT();
@@ -33,91 +29,74 @@ int main() {
 
     encoder_init();
     acelerometro_init();
-    setup_uart();
 
-    bool robot_iniciado = false;
+    maze_solver_init();
 
-    printf("Micromouse listo\n");
-    printf("Presione el boton de inicio\n");
+    gpio_init(BUTTON_PIN_INICIO);
+    gpio_set_dir(BUTTON_PIN_INICIO, GPIO_IN);
+    gpio_pull_down(BUTTON_PIN_INICIO);
 
-    // Bucle principal
-    while(true){
+    gpio_init(BUTTON_PIN_RESET);
+    gpio_set_dir(BUTTON_PIN_RESET, GPIO_IN);
+    gpio_pull_down(BUTTON_PIN_RESET);
 
-        // ==========================
-        // ESPERA DE INICIO
-        // ==========================
-        if(!robot_iniciado){
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-            direccion_parar();
+    bool started = false;
 
-            if(button_pressed(BUTTON_PIN_INICIO)){
+    while(true) {
 
-                robot_iniciado = true;
-
-                printf("Robot iniciado\n");
-
-                gpio_put(PICO_DEFAULT_LED_PIN, 1);
-
-                sleep_ms(300);
-            }
-
-            sleep_ms(20);
-            continue;
-        }
-
-        // ==========================
-        // BOTON RESET
-        // ==========================
-        if(button_pressed(BUTTON_PIN_RESET)){
-
-            direccion_parar();
-
-            robot_iniciado = false;
-
-            printf("Robot detenido\n");
+        // Esperando inicio
+        if(!started) {
 
             gpio_put(PICO_DEFAULT_LED_PIN, 0);
 
-            sleep_ms(300);
+            if(gpio_get(BUTTON_PIN_INICIO)) {
 
-            continue;
+                sleep_ms(50);
+
+                if(gpio_get(BUTTON_PIN_INICIO)) {
+
+                    printf("Inicio de exploracion\n");
+
+                    started = true;
+
+                    gpio_put(PICO_DEFAULT_LED_PIN, 1);
+                }
+            }
         }
 
-        // ==========================
-        // LEER SENSORES
-        // ==========================
-        monitor_data_t data = monitor_leer_datos();
+        // Exploracion
+        else {
 
-        monitor_imprimir(data);
-        // ==========================
-        // CONTROL DE MOVIMIENTO
-        // ==========================
-        if (data.ir.front) {
+            flood_explore();
 
-            direccion_adelante();
+            printf("Centro encontrado\n");
 
-        } else if (data.ir.left) {
-
-            direccion_izquierda();
-
-        } else if (data.ir.right) {
-
-            direccion_derecha();
-
-        } else if (data.ir.back) {
-
-            direccion_atras();
-
-            // Evita vibraciones en reversa
-            sleep_ms(200);
-
-        } else {
-
-            direccion_parar();
+            started = false;
         }
 
-        sleep_ms(100);
+        // Reset
+        if(gpio_get(BUTTON_PIN_RESET)) {
+
+            sleep_ms(50);
+
+            if(gpio_get(BUTTON_PIN_RESET)) {
+
+                printf("Reset del laberinto\n");
+
+                maze_solver_init();
+
+                started = false;
+
+                direccion_parar();
+
+                while(gpio_get(BUTTON_PIN_RESET))
+                    sleep_ms(10);
+            }
+        }
+
+        sleep_ms(10);
     }
-
-    return 0;
 }
