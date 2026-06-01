@@ -3,13 +3,13 @@
 #define DEFAULT_H
 
 //Definición de pines para sensor infrarrojo
-#define IR_LEFT_PIN 13
+#define IR_LEFT_PIN 19
 #define IR_RIGHT_PIN 15
 #define IR_FRONT_PIN 17
 #define IR_BACK_PIN 16
 //Definición de pwm para motores
-#define MOTOR_LEFT_PWM_PIN 18   
-#define MOTOR_RIGHT_PWM_PIN 19
+#define MOTOR_LEFT_PWM_PIN 18
+#define MOTOR_RIGHT_PWM_PIN 19                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 //Definicion de acerelometro
 #define SCL_PIN 9
 #define SDA_PIN 8
@@ -47,12 +47,5 @@
 
 #define UART_TX_PIN 0
 #define UART_RX_PIN 1
-
-/*Definicion de pines para Modulo SD LVC125a para guardar datos y chekpoins del laberinto 
-#define SD_CS_PIN 9
-#define SD_SCK_PIN 10
-#define SD_MOSI_PIN 8
-#define SD_MISO_PIN 11
-*/
 
 #endif

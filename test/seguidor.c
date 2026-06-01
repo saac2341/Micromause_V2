@@ -1,230 +1,93 @@
-/*Programa de prueba encargado de verificar los sensores y detección*/
-
-/*Programa de prueba encargado de verificar los sensores y detección*/
-
 #include <stdio.h>
-#include <stdbool.h>
-
 #include "pico/stdlib.h"
-
-
 #include "lib/pwm.h"
 #include "lib/direccion.h"
 #include "lib/sensorinfrarrojo.h"
 #include "lib/encoder.h"
 #include "lib/acelerometro.h"
 #include "lib/monitor.h"
-#include "lib/button.h"
-#include "lib/comunicacion.h"
-
 #include "temp/default.h"
+#include "lib/comunicacion.h"
+#include "lib/button.h"
 
-int main() {
-
+void setup(){
     stdio_init_all();
+    sleep_ms(5000); // Esperar a que se inicialice la conexión serial
 
+
+    // Inicialización
+    printf("Inicializando componentes...\n");
+    uart_puts(UART_ID, "Inicializando componentes...\n");
     motores_init();
+    printf("Motores inicializados.\n");
+    uart_puts(UART_ID, "Motores inicializados.\n");
     direccion_init();
-
-    button_init();
-
+    printf("Dirección inicializada.\n");
+    uart_puts(UART_ID, "Dirección inicializada.\n");
     sensor_infrarrojo_init_BACK();
+    printf("Sensor infrarrojo trasero inicializado.\n");
+    uart_puts(UART_ID, "Sensor infrarrojo trasero inicializado.\n");
     sensor_infrarrojo_init_FRONT();
+    printf("Sensor infrarrojo frontal inicializado.\n");
+    uart_puts(UART_ID, "Sensor infrarrojo frontal inicializado.\n");
     sensor_infrarrojo_init_LEFT();
+    printf("Sensor infrarrojo izquierdo inicializado.\n");
+    uart_puts(UART_ID, "Sensor infrarrojo izquierdo inicializado.\n");
     sensor_infrarrojo_init_RIGHT();
-
+    printf("Sensor infrarrojo derecho inicializado.\n");
+    uart_puts(UART_ID, "Sensor infrarrojo derecho inicializado.\n");
     encoder_init();
+    printf("Encoders inicializados.\n");
+    uart_puts(UART_ID, "Encoders inicializados.\n");
     acelerometro_init();
-    setup_uart();
+    printf("Acelerómetro inicializado.\n");
+    uart_puts(UART_ID, "Acelerómetro inicializado.\n");
+    printf("Inicialización completa.\n");
+    uart_puts(UART_ID, "Inicialización completa.\n");
+    button_init();
+    printf("Botones inicializados.\n");
+    uart_puts(UART_ID, "Botones inicializados.\n");
 
-    bool robot_iniciado = false;
-
-    printf("Micromouse listo\n");
-    printf("Presione el boton de inicio\n");
-
-    // Bucle principal
-    while(true){
-
-        // ==========================
-        // ESPERA DE INICIO
-        // ==========================
-        if(!robot_iniciado){
-
-            direccion_parar();
-
-            if(button_pressed(BUTTON_PIN_INICIO)){
-
-                robot_iniciado = true;
-
-                printf("Robot iniciado\n");
-
-                gpio_put(PICO_DEFAULT_LED_PIN, 1);
-
-                sleep_ms(300);
-            }
-
-            sleep_ms(20);
-            continue;
-        }
-
-        // ==========================
-        // BOTON RESET
-        // ==========================
-        if(button_pressed(BUTTON_PIN_RESET)){
-
-            direccion_parar();
-
-            robot_iniciado = false;
-
-            printf("Robot detenido\n");
-
-            gpio_put(PICO_DEFAULT_LED_PIN, 0);
-
-            sleep_ms(300);
-
-            continue;
-        }
-
-        // ==========================
-        // LEER SENSORES
-        // ==========================
-        monitor_data_t data = monitor_leer_datos();
-
-        monitor_imprimir(data);
-        // ==========================
-        // CONTROL DE MOVIMIENTO
-        // ==========================
-        if (data.ir.front) {
-
-            direccion_adelante();
-
-        } else if (data.ir.left) {
-
-            direccion_izquierda();
-
-        } else if (data.ir.right) {
-
-            direccion_derecha();
-
-        } else if (data.ir.back) {
-
-            direccion_atras();
-
-            // Evita vibraciones en reversa
-            sleep_ms(200);
-
-        } else {
-
-            direccion_parar();
-        }
-
-        sleep_ms(100);
-    }
-
-    return 0;
 }
 
-int main() {
-
-    stdio_init_all();
-
-    motores_init();
-    direccion_init();
-
-    button_init();
-
-    sensor_infrarrojo_init_BACK();
-    sensor_infrarrojo_init_FRONT();
-    sensor_infrarrojo_init_LEFT();
-    sensor_infrarrojo_init_RIGHT();
-
-    encoder_init();
-    acelerometro_init();
-    setup_uart();
-
-    bool robot_iniciado = false;
-
-    printf("Micromouse listo\n");
-    printf("Presione el boton de inicio\n");
-
-    // Bucle principal
-    while(true){
-
-        // ==========================
-        // ESPERA DE INICIO
-        // ==========================
-        if(!robot_iniciado){
-
-            direccion_parar();
-
-            if(button_pressed(BUTTON_PIN_INICIO)){
-
-                robot_iniciado = true;
-
-                printf("Robot iniciado\n");
-
-                gpio_put(PICO_DEFAULT_LED_PIN, 1);
-
-                sleep_ms(300);
-            }
-
-            sleep_ms(20);
-            continue;
-        }
-
-        // ==========================
-        // BOTON RESET
-        // ==========================
-        if(button_pressed(BUTTON_PIN_RESET)){
-
-            direccion_parar();
-
-            robot_iniciado = false;
-
-            printf("Robot detenido\n");
-
-            gpio_put(PICO_DEFAULT_LED_PIN, 0);
-
-            sleep_ms(300);
-
-            continue;
-        }
-
-        // ==========================
-        // LEER SENSORES
-        // ==========================
-        monitor_data_t data = monitor_leer_datos();
-
-        monitor_imprimir(data);
-        // ==========================
-        // CONTROL DE MOVIMIENTO
-        // ==========================
-        if (data.ir.front) {
-
-            direccion_adelante();
-
-        } else if (data.ir.left) {
-
-            direccion_izquierda();
-
-        } else if (data.ir.right) {
-
-            direccion_derecha();
-
-        } else if (data.ir.back) {
-
-            direccion_atras();
-
-            // Evita vibraciones en reversa
-            sleep_ms(200);
-
-        } else {
-
-            direccion_parar();
-        }
-
-        sleep_ms(100);
+void loop(){
+    ///Activacíon por boton Inicio, luego el programa se ejecuta continuamente hasta que se presione el boton de reset.
+     while (gpio_get(BUTTON_PIN_INICIO)) {
+        sleep_ms(100); // Evitar consumo excesivo de CPU
     }
+    while (true){
+        //Funcon para monitorizar el estado del micromouse y actualizar el laberinto.
+        monitor_data_t data = monitor_leer_datos();
+        monitor_imprimir(data);
 
+        //lógica de movimiento basada en los sensores infrarrojos.
+        if(!data.ir.front){
+            direccion_recto();
+            sleep_ms(10); // Avanzar un poco antes de verificar nuevamente
+
+        }else if(!data.ir.left){
+            grados_izquierda_90();
+            sleep_ms(10); // estabilidad
+        }
+        else if(!data.ir.right){
+            grados_derecha_90();
+            sleep_ms(10); // estabilidad
+        }
+        else if(!data.ir.back){
+            direccion_atras();
+            sleep_ms(10); // Retroceder un poco antes de verificar nuevamente
+        }
+        else {
+            direccion_parar();
+            sleep_ms(10); // estabilidad
+        }
+
+        sleep_ms(20); // estabilidad
+    }
+}
+
+void main() {
+    setup();
+    loop();
     return 0;
 }

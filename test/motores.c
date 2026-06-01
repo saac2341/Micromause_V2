@@ -14,6 +14,9 @@ int main() {
     motores_init();
     setup_uart();
 
+    sleep_ms(10000); // Esperar a que se inicialice la conexión serial
+    uart_puts(UART_ID, "Prueba de motores iniciada\n");
+
     while (true) {
         // Prueba de movimiento hacia adelante
         direccion_adelante(); // Velocidad máxima
@@ -45,5 +48,5 @@ int main() {
 
     }
 
-    return 0;+
+    return 0;
 }

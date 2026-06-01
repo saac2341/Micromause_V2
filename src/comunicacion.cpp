@@ -2,9 +2,13 @@
 #include "comunicacion.h"
 #include "temp/default.h"
 
-void setup_uart(void) {
+void setup_uart() {
     // Implementation for setting up UART
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
     
+
+    ///CONFIGURACION DE LA UART
+    uart_init(UART_ID, BAUD_RATE);
 }
+

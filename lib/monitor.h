@@ -17,6 +17,7 @@ typedef struct{
     bool back;
     bool left;
 }ir_data_t;
+
 //Estructura para el sistema.
 typedef struct{
     ir_data_t ir;

@@ -10,6 +10,7 @@
 #include "pico/stdlib.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "lib/comunicacion.h"
 
 #ifndef COLOR_CENTRO
 #define COLOR_CENTRO 1

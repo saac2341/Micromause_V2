@@ -18,14 +18,14 @@ void direccion_init() {
 void direccion_izquierda() {
     direccion_parar(); // Detener antes de cambiar de dirección para evitar daños
     sleep_ms(100); // Pequeña pausa para asegurar que los motores se detengan completamente
-    motor_set_speed(1, -VELOCIDAD_MEDIA); // Motor izquierdo a velocidad media
+    motor_set_speed(1, -VELOCIDAD_MAX); // Motor izquierdo a velocidad media
     motor_set_speed(2, VELOCIDAD_MEDIA); // Motor derecho detenido      
 }
 void direccion_derecha() {
    direccion_parar(); // Detener antes de cambiar de dirección para evitar daños
    sleep_ms(100); // Pequeña pausa para asegurar que los motores se detengan completamente
    motor_set_speed(1, VELOCIDAD_MEDIA); // Motor izquierdo detenido
-   motor_set_speed(2, -VELOCIDAD_MEDIA); // Motor derecho a velocidad media
+   motor_set_speed(2, -VELOCIDAD_MAX); // Motor derecho a velocidad media
 }
 void direccion_adelante() {
     direccion_parar(); // Detener antes de cambiar de dirección para evitar daños
@@ -35,8 +35,8 @@ void direccion_adelante() {
 void direccion_atras() {
     direccion_parar(); // Detener antes de cambiar de dirección para evitar daños
     sleep_ms(100); // Pequeña pausa para asegurar que los motores se detengan completamente
-    motor_set_speed(1, -VELOCIDAD_MEDIA); // Motor izquierdo a velocidad máxima en reversa
-    motor_set_speed(2, -VELOCIDAD_MEDIA); // Motor derecho a velocidad máxima en reversa
+    motor_set_speed(1, -VELOCIDAD_MAX); // Motor izquierdo a velocidad máxima en reversa
+    motor_set_speed(2, -VELOCIDAD_MAX); // Motor derecho a velocidad máxima en reversa
 }
 void direccion_parar() {
     motor_set_speed(1, 0); // Detener motor izquierdo

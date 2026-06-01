@@ -45,7 +45,6 @@ pico_set_program_version(Micromouse_V2 "0.1")
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(Micromouse_V2 0)
 pico_enable_stdio_usb(Micromouse_V2 1)
-
 # Add the standard library to the build
 target_link_libraries(Micromouse_V2
         pico_stdlib
@@ -54,6 +53,8 @@ target_link_libraries(Micromouse_V2
         hardware_spi
         hardware_pwm
         hardware_adc
+        hardware_spi
+        
         )
 
 # Add the standard include files to the build
@@ -82,4 +83,5 @@ target_sources(Micromouse_V2 PRIVATE
         src/comunicacion.cpp
 )
 pico_add_extra_outputs(Micromouse_V2)
+
 

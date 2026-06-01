@@ -37,7 +37,7 @@ monitor_data_t monitor_leer_datos(void) {
 void monitor_imprimir(monitor_data_t data) {
         //Leer datos de los sensores y almacenarlos en la estructura monitor_data_t.
 
-    char buffer[256]; // Buffer para almacenar los datos a enviar por UART
+    char buffer[128]; // Buffer para almacenar los datos a enviar por UART
  snprintf(buffer,
              sizeof(buffer),
              "L:%ld\tR:%ld\tDL:%.2f\tDR:%.2f\tAX:%.2f\tAY:%.2f\tAZ:%.2f\tIR:%d%d%d%d\r\n",

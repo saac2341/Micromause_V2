@@ -6,7 +6,7 @@
 #include "lib/comunicacion.h"
 
 
-int main(){
+void main(){
     stdio_init_all();
     setup_uart();
     sleep_ms(5000); // Esperar a que se inicialice la conexión serial
@@ -33,5 +33,4 @@ int main(){
         }
         sleep_ms(100); // Evitar consumo excesivo de CPU
     }
-    return 0;
 }

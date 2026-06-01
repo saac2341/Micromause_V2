@@ -7,6 +7,7 @@
 #include "lib/acelerometro.h"
 #include "lib/monitor.h"
 #include "temp/default.h"
+#include "lib/comunicacion.h"
 
 int main(){
     stdio_init_all();
@@ -20,6 +21,8 @@ int main(){
     sensor_infrarrojo_init_RIGHT();
     encoder_init();
     acelerometro_init();
+    
+    void setup_uart(void);
 
     while (true){
         //Funcon para monitorizar el estado del micromouse y actualizar el laberinto.
